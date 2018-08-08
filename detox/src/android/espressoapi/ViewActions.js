@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 function sanitize_matcher(matcher) {
   if (!matcher._call) {
     return matcher;
@@ -275,7 +276,7 @@ class ViewActions {
     if (typeof desiredStateMatcher !== 'object' || typeof desiredStateMatcher.constructor !== 'function' || desiredStateMatcher.constructor.name.indexOf('Matcher') === -1) {
       const isObject = typeof desiredStateMatcher === 'object';
       const additionalErrorInfo = isObject ? typeof desiredStateMatcher.constructor === 'object' ? 'the constructor is no object' : 'it has a wrong class name: "' + desiredStateMatcher.constructor.name + '"' : 'it is no object';
-      console.error('desiredStateMatcher should be an instance of Matcher, got "' + desiredStateMatcher + '", it appears that ' + additionalErrorInfo);
+      log.error('desiredStateMatcher should be an instance of Matcher, got "' + desiredStateMatcher + '", it appears that ' + additionalErrorInfo);
     }
 
     if (typeof maxAttempts !== "number") throw new Error("maxAttempts should be a number, but got " + (maxAttempts + (" (" + (typeof maxAttempts + ")"))));

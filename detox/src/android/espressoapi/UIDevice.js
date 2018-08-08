@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class UiDevice {
   static setCompressedLayoutHeirarchy(element, compressed) {

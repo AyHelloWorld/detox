@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class GREYInteraction {
   /*Indicates that the current interaction should be performed on a UI element contained inside

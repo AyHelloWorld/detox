@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 function sanitize_greyElementInteraction(value) {
   return {
     type: 'Invocation',

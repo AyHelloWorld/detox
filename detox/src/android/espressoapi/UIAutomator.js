@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class UiAutomator {
   static uiDevice() {

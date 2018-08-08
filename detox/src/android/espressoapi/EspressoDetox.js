@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class EspressoDetox {
   static perform(interaction, action) {

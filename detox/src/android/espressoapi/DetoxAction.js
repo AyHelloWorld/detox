@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 function sanitize_android_edge(edge) {
   switch (edge) {
     case 'left':

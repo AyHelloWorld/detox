@@ -4,6 +4,7 @@ const objectiveCParser = require('objective-c-parser');
 const javaMethodParser = require('java-method-parser');
 const generate = require('babel-generator').default;
 const fs = require('fs');
+const path = require('path');
 
 const { methodNameToSnakeCase } = require('../helpers');
 let globalFunctionUsage = {};
@@ -219,14 +220,20 @@ module.exports = function getGenerator({
       const json = isObjectiveC ? objectiveCParser(input) : javaMethodParser(input);
 
       // set default name
+      const pathFragments = outputFile.split('/');
       if (!json.name) {
-        const pathFragments = outputFile.split('/');
         json.name = pathFragments[pathFragments.length - 1].replace('.js', '');
       }
       const ast = t.program([createClass(json), createExport(json)]);
       const output = generate(ast);
 
       const commentBefore = '/**\n\n\tThis code is generated.\n\tFor more information see generation/README.md.\n*/\n\n';
+
+      pathFragments.pop(); // remove filename
+      const outputPath = pathFragments.join("/")
+      const absoluteUtilsPath = path.resolve('../detox/src/utils');
+      const relativeUtilsPath = path.relative(outputPath, absoluteUtilsPath);
+      const logImport = `const log = require('${relativeUtilsPath}/logger');`;
 
       // Add global helper functions
       const globalFunctionsStr = fs.readFileSync(__dirname + '/global-functions.js', 'utf8');
@@ -244,7 +251,7 @@ module.exports = function getGenerator({
         })
         .join('\n');
 
-      const code = [commentBefore, globalFunctions, output.code].join('\n');
+      const code = [commentBefore, logImport, globalFunctions, output.code].join('\n');
       fs.writeFileSync(outputFile, code, 'utf8');
 
       // Output methods that were not created due to missing argument support

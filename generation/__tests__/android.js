@@ -2,6 +2,11 @@ const fs = require('fs');
 const remove = require('remove');
 const androidGenerator = require('../adapters/android');
 
+const mockErrorLog = jest.fn();
+jest.mock("../../detox/src/utils/logger", () => ({
+  error: mockErrorLog
+}));
+
 describe('Android generation', () => {
   let ExampleClass;
   let exampleContent;
@@ -66,18 +71,16 @@ describe('Android generation', () => {
   describe('validation', () => {
     describe('Matcher<View>', () => {
       it('should log that it gets no object', () => {
-        const spy = jest.spyOn(console, "error");
         expect(() => {
           ExampleClass.matcherForAnd('I am a string', 'I am one too');
         }).not.toThrow();
 
         
-        expect(spy).toHaveBeenCalled();
-        spy.mockRestore();
+        expect(mockErrorLog).toHaveBeenCalled();
+        mockErrorLog.mockRestore();
       });
 
       it('should log with a wrong class', () => {
-        const spy = jest.spyOn(console, "error");
         class AnotherClass {}
         const x = new AnotherClass();
 
@@ -85,8 +88,8 @@ describe('Android generation', () => {
           ExampleClass.matcherForAnd(x, x);
         }).not.toThrow();
 
-        expect(spy).toHaveBeenCalled();
-        spy.mockRestore();
+        expect(mockErrorLog).toHaveBeenCalled();
+        mockErrorLog.mockRestore();
       });
 
       it("should succeed with the 'right' class", () => {

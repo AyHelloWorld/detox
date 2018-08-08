@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class GREYCondition {
   /*Waits for the condition to be met until the specified @c seconds have elapsed.

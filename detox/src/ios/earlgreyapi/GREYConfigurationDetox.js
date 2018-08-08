@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 
 class GREYConfiguration {
   static enableSynchronization(element) {

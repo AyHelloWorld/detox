@@ -5,6 +5,7 @@
 */
 
 
+const log = require('../../utils/logger');
 function sanitize_uiDeviceOrientation(value) {
   const orientationMapping = {
     landscape: 3, // top at left side landscape
